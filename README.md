@@ -1,7 +1,7 @@
 # Basic CUDA samples (Main README file)
 
 Set of programs to teach the basics of CUDA programming for the scientific
-community. Each directory is independent and self contained and could run by
+community. Each directory is independent, self contained and could run by
 itself.
 
 ## Program structure
@@ -9,7 +9,7 @@ itself.
 Each directory, labeled `XX_name`, contains an independent code to check
 different CUDA implementations, library usage, concepts, etc.
 
-Additionally each subdirectory has its own:
+Additionally each directory has its own:
 
 - A `READMEXX.md` file for each code
 - A `Doxyfile` used by Doxygen to generate documentation
