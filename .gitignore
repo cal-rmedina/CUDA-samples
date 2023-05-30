@@ -1,0 +1,4 @@
+# Ignore Doxygen directories recursively
+
+**/html/
+**/latex/
