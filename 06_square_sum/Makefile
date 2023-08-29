@@ -1,7 +1,7 @@
 export PATH := /usr/local/cuda/bin:$(PATH)
 CXX = nvcc
-TFLAG=-DPRINT_FACTORIAL
 NVFLAGS = -Wno-deprecated-declarations -gencode arch=compute_61,code=compute_61
+TFLAG=-DPRINT_1ST_STREAM
 STREAM_FLAG=--default-stream per-thread
 NAME =main
 

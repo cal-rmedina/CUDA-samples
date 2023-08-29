@@ -1,20 +1,23 @@
-# Pi computation on GPU
+#Mandelbrot set with CUDA
 
-Program to compute the $\pi$ with Monte-Carlo samples.
+Code to make the [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set)
+using 2D threads addressing pixels within the image. The code could be
+optimized taking advantages of the Mandelbrot set properties (symmetry,
+connected points, etc) but the objective of this code is to show the usage of
+2D threads.
+
+![Image](assets/mb_rgb1024.png =400x)
 
 ## Features
 
-Parallel CUDA/C proof of concept code made with the purpose of explaining
-different [CUDA](https://developer.nvidia.com/cuda-toolkit) concepts like:
+Some features of this repository besides the code:
 
-- Kernel calls and launch
-- Reductions
-- CURAND library
-
-For more details about each concept, refer to the [CUDA
-Documentation](https://docs.nvidia.com/cuda/)
+- [Doxygen](https://www.doxygen.nl/index.html) documentation for easy code understanding.
+- PDF guide (`./assets/guide.pdf`) with code explanation made with [LaTeX's](https://www.latex-project.org/) library [tikz](https://tikz.dev/).
 
 ## Documentation
+
+### Doxygen
 
 Explicit documentation for the whole code has been made using
 [Doxygen](https://doxygen.nl/), each file includes comments with the  Doxygen
@@ -49,12 +52,17 @@ Once Doxygen has run and the documentation is created, different directories
 are generated, the documentation can be seen opening the file
 `html/index.html`.
 
+### Guide for the curious user
+
+[PDF Guide](assets/guide.pdf) with the description of the algorithm and images.
+
 ## Dependencies
 
-To run the code a NVIDIA GPU on your computer is needed, to compile the code,
-[nvcc](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html) must
-be installed on your computer, it is included in the [NVIDIA
-CUDA-Toolkit](https://developer.nvidia.com/cuda-toolkit).
+ - [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit) installed.
+ - C/C++ installed.
+ - [Doxygen](https://www.doxygen.nl/index.html) installed to generate the documentation (not needed to run the program).
+ - [GNU-Make](https://www.gnu.org/software/make/) for quick compiling (not needed to run the code).
+
 
 ## Code structure
 
@@ -109,16 +117,16 @@ each function, those sections have the following format:
 Lines are omitted if the code is compiled without testing flags, to activate
 them, modify `TFLAG` inside `Makefile` including `TFLAG=testing_flag_name`.
 
-### Testing: Printing Pi result
+### Testing: Printing output image details
 
-For this code there is only one Macro to print the values of $\pi$,
+For this code there is only one Macro to print the image details,
 to include/omit it uncomment/comment the `TFLAG` directly on the `Makefile`.
 
-If not, add the compiling option with the following format `-D` + `PRINT_PI`;
-`-DPRINT_PI` directly on the terminal as follows
+If not, add the compiling option with the following format `-D` +
+`PRINT_SET_DETAILS`; `-DPRINT_SET_DETAILS` directly on the terminal as follows
 
 ```
-$nvcc -DPRINT_PI -Wno-deprecated-declarations -gencode
+$nvcc -DPRINT_SET_DETAILS -Wno-deprecated-declarations -gencode
 arch=compute_61,code=compute_61 main.cu -o main.exe
 ```
 
@@ -132,4 +140,17 @@ directly on the terminal: `$./main.exe` or with make (`$make run`).
 This file was created using [Markdown](https://www.markdownguide.org/), a
 lightweight markup language for creating formatted text using a plain-text
 editor. For syntax go to the
-[Guide](https://www.markdownguide.org/basic-syntax/).
+[Markdown basic syntax](https://www.markdownguide.org/basic-syntax/).
+
+## Code structure
+
+### Main code (`./main.cu`)
+
+>The main code contains the main program and the respective libraries used, the
+>function calls, variables definition, constants of the code and memory
+>allocation. It is a good starting point to check if you have previous CUDA
+>knowledge.
+
+### Source files (`./src/*.h`)
+
+>Testing functions, kernels and kernel calls (used in main.cu)

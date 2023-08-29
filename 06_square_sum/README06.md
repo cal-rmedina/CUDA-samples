@@ -1,6 +1,8 @@
-# Pi computation on GPU
+# Square sum on GPU
 
-Program to compute the $\pi$ with Monte-Carlo samples.
+Program to compute the [Square pyramidal
+number](https://en.wikipedia.org/wiki/Square_pyramidal_number) of the first $n$
+elements of the sum $1^2+2^2+...+n^2$.
 
 ## Features
 
@@ -8,8 +10,7 @@ Parallel CUDA/C proof of concept code made with the purpose of explaining
 different [CUDA](https://developer.nvidia.com/cuda-toolkit) concepts like:
 
 - Kernel calls and launch
-- Reductions
-- CURAND library
+- CUDA Streams; concurrency during kernel execution
 
 For more details about each concept, refer to the [CUDA
 Documentation](https://docs.nvidia.com/cuda/)
@@ -25,7 +26,7 @@ as headers of each file and also after each function.
 ```
 /** @file fileGPU.h
  *
- * @brief       File with the kernel & kernel call computing ....
+ * @brief       File with the kernel & kernel call computing \f$n!\f$.
  */
 
 ```
@@ -48,6 +49,13 @@ Manual](https://www.doxygen.nl/manual/starting.html) for more details.
 Once Doxygen has run and the documentation is created, different directories
 are generated, the documentation can be seen opening the file
 `html/index.html`.
+
+### Guide for the curious user: build your own pyramid 
+
+[PDF Guide](assets/pyramid.pdf) with the description of the algorithm, images
+and activities to build pyramids and check for the basic cases.
+
+![Image](assets/n_pyramid.png =400x)
 
 ## Dependencies
 
@@ -90,11 +98,11 @@ device, check the details of your target GPU architecture.
 **If you do not know what make does**, compile typing directly on the terminal.
 
 ```
-$nvcc -Wno-deprecated-declarations -gencode
+$nvcc --default-stream per-thread -Wno-deprecated-declarations -gencode
 arch=compute_61,code=compute_61 main.cu -o main.exe
 ```
 
-The case where `XX=61` targets Pascal architecture GTX10xx series.
+The case where `XX=61` targets Pascal architecture GTX10xx series, and the `--default-stream per-thread` should be included to allows kernel execution overlap (CUDA-Streams).
 
 ## Testing the code (Macros)
 
@@ -106,26 +114,28 @@ each function, those sections have the following format:
   testing code
 #endif
 ```
+
 Lines are omitted if the code is compiled without testing flags, to activate
 them, modify `TFLAG` inside `Makefile` including `TFLAG=testing_flag_name`.
 
-### Testing: Printing Pi result
+### Testing: Printing result of the sum on the first stream
 
-For this code there is only one Macro to print the values of $\pi$,
+For this code there is only one Macro to print the values of $n!$,
 to include/omit it uncomment/comment the `TFLAG` directly on the `Makefile`.
 
-If not, add the compiling option with the following format `-D` + `PRINT_PI`;
-`-DPRINT_PI` directly on the terminal as follows
+If not, add the compiling option with the following format `-D` + `PRINT_FACTORIAL`;
+`-DPRINT_1ST_STREAM` directly on the terminal
 
 ```
-$nvcc -DPRINT_PI -Wno-deprecated-declarations -gencode
-arch=compute_61,code=compute_61 main.cu -o main.exe
+$nvcc -DPRINT_1ST_STREAM --default-stream per-thread
+-Wno-deprecated-declarations -gencode arch=compute_61,code=compute_61 main.cu
+-o main.exe
 ```
 
 ## Run the code
 
 Once the code is compiled, a executable file is created `main.exe`, run it
-directly on the terminal: `$./main.exe` or with make (`$make run`).
+directly on the terminal: `$./main.exe` or with make `$make run`.
 
 ### README.md file
 

@@ -1,21 +1,18 @@
-export PATH := /usr/local/cuda/bin:$(PATH)
 CXX = nvcc
-TFLAG=-DPRINT_FACTORIAL
+#TFLAG = -DPRINT_SET_DETAILS
 NVFLAGS = -Wno-deprecated-declarations -gencode arch=compute_61,code=compute_61
-STREAM_FLAG=--default-stream per-thread
-NAME =main
+NAME = main
 
 $(NAME).exe: $(NAME).cu
-	$(CXX) $(TFLAG) $(STREAM_FLAG) $(NVFLAGS) $< -o $@
+	$(CXX) $(TFLAG) $(NVFLAGS) $< -o $@
 
 .PHONY: clean
-
 clean:
 	rm -f $(NAME).exe
 
 .PHONY: run
-
 run: $(NAME).exe
 	./$<
+
 profile: $(NAME).exe
 	nsys profile --trace=cuda,osrt ./$<
