@@ -20,5 +20,5 @@ Additionally each directory has its own:
 
 1. Factorial: Recursive device functions, basic kernel usage and Streams.
 4. Pi Monte-Carlo: CURAND library, Macros for checking error and reduction.
-5. Mandelbrot set: 2D kernels, cudaMalloc.
+5. Mandelbrot set: 2D kernels, templates, cudaMalloc.
 6. Square sum: Streams.
